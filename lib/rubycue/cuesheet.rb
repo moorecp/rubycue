@@ -8,7 +8,7 @@ module RubyCue
         :track => %r(TRACK (\d{1,3}) AUDIO),
         :performer => %r(PERFORMER "(.*)"),
         :title => %r(TITLE "(.*)"),
-        :index => %r(INDEX \d{1,3} (\d{1,3}):(\d{1,2}):(\d{1,2})),
+        :index => %r(INDEX \d{1,3} (\d{1,4}):(\d{1,2}):(\d{1,2})),
         :file => %r(FILE "(.*)"),
         :genre => %r(REM GENRE (.*)\b)
       }
@@ -18,7 +18,7 @@ module RubyCue
     def parse!
       @songs = parse_titles.map{|title| {:title => title}}
       @songs.each_with_index do |song, i|
-        song[:performer] = parse_performers[i]
+        song[:performer] = parse_performers[i] || performer
         song[:track] = parse_tracks[i]
         song[:index] = parse_indices[i]
         song[:file] = parse_files[i]
